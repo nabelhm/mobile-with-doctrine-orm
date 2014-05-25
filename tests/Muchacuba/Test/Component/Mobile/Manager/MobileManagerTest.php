@@ -124,4 +124,14 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($repository->findAll()));
     }
+
+    /**
+     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::remove
+     * @expectedException \InvalidArgumentException
+     */
+    public function testRemoveWithInvalidObject()
+    {
+        $manager = new MobileManager($this->em);
+        $manager->remove(new \stdClass());
+    }
 }
