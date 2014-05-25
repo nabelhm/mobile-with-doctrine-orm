@@ -101,7 +101,7 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::add
+     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::remove
      */
     public function testRemove()
     {
