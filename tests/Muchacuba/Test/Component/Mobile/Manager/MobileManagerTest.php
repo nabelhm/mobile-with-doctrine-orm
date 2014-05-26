@@ -1,10 +1,10 @@
 <?php
 
-namespace Muchacuba\Test\Component\Mobile\Manager;
+namespace Cubalider\Test\Component\Mobile\Manager;
 
-use Muchacuba\Component\Mobile\Manager\MobileManager;
-use Muchacuba\Test\Component\Mobile\EntityManagerBuilder;
-use Muchacuba\Component\Mobile\Entity\Mobile;
+use Cubalider\Component\Mobile\Manager\MobileManager;
+use Cubalider\Test\Component\Mobile\EntityManagerBuilder;
+use Cubalider\Component\Mobile\Entity\Mobile;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -22,21 +22,21 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
         $builder = new EntityManagerBuilder();
         $this->em = $builder->createEntityManager(
             array(
-                'Muchacuba\Component\Mobile\Entity\Mobile',
+                'Cubalider\Component\Mobile\Entity\Mobile',
             ),
             array(),
             array(
-                'Muchacuba\Component\Mobile\Entity\MobileInterface' => 'Muchacuba\Component\Mobile\Entity\Mobile',
+                'Cubalider\Component\Mobile\Entity\MobileInterface' => 'Cubalider\Component\Mobile\Entity\Mobile',
             )
         );
     }
 
     /**
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::__construct
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::__construct
      */
     public function testConstructor()
     {
-        $class = 'Muchacuba\Component\Mobile\Entity\Mobile';
+        $class = 'Cubalider\Component\Mobile\Entity\Mobile';
         $metadata = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
         $metadata->expects($this->once())->method('getName')->will($this->returnValue($class));
         $em = $this->getMock('Doctrine\ORM\EntityManagerInterface');
@@ -46,11 +46,11 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertAttributeEquals($em, 'em', $manager);
         $this->assertAttributeEquals($class, 'class', $manager);
-        $this->assertAttributeEquals($em->getRepository('Muchacuba\Component\Mobile\Entity\Mobile'), 'repository', $manager);
+        $this->assertAttributeEquals($em->getRepository('Cubalider\Component\Mobile\Entity\Mobile'), 'repository', $manager);
     }
     
     /**
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::pick
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::pick
      */
     public function testPick()
     {
@@ -74,8 +74,8 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::add
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::validate
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::add
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::validate
      */
     public function testAdd()
     {
@@ -89,14 +89,14 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new MobileManager($this->em);
         $manager->add($mobile1);
 
-        $repository = $this->em->getRepository('Muchacuba\Component\Mobile\Entity\Mobile');
+        $repository = $this->em->getRepository('Cubalider\Component\Mobile\Entity\Mobile');
 
         $this->assertEquals(1, count($repository->findAll()));
     }
 
     /**
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::add
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::validate
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::add
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::validate
      * @expectedException \InvalidArgumentException
      */
     public function testAddWithInvalidObject()
@@ -106,8 +106,8 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::remove
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::validate
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::remove
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::validate
      */
     public function testRemove()
     {
@@ -126,14 +126,14 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new MobileManager($this->em);
         $manager->remove($mobile1);
 
-        $repository = $this->em->getRepository('Muchacuba\Component\Mobile\Entity\Mobile');
+        $repository = $this->em->getRepository('Cubalider\Component\Mobile\Entity\Mobile');
 
         $this->assertEquals(1, count($repository->findAll()));
     }
 
     /**
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::remove
-     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::validate
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::remove
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::validate
      * @expectedException \InvalidArgumentException
      */
     public function testRemoveWithInvalidObject()

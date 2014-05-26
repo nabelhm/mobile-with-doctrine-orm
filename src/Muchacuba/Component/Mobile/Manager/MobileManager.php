@@ -1,10 +1,10 @@
 <?php
 
-namespace Muchacuba\Component\Mobile\Manager;
+namespace Cubalider\Component\Mobile\Manager;
 
 use Cubalider\Component\Mobile\Manager\MobileManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Muchacuba\Component\Mobile\Entity\MobileInterface;
+use Cubalider\Component\Mobile\Entity\MobileInterface;
 
 /**
  * @author Yosmany Garcia <yosmanyga@gmail.com>
@@ -36,7 +36,7 @@ class MobileManager implements MobileManagerInterface
      */
     public function __construct(
         EntityManagerInterface $em,
-        $class = 'Muchacuba\Component\Mobile\Entity\Mobile'
+        $class = 'Cubalider\Component\Mobile\Entity\Mobile'
     )
     {
         $this->em = $em;

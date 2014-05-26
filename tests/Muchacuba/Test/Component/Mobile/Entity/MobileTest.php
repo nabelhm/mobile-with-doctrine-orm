@@ -1,8 +1,8 @@
 <?php
 
-namespace Muchacuba\Test\Component\Mobile\Entity;
+namespace Cubalider\Test\Component\Mobile\Entity;
 
-use Muchacuba\Component\Mobile\Entity\Mobile;
+use Cubalider\Component\Mobile\Entity\Mobile;
 
 /**
  * @author Yosmany Garcia <yosmanyga@gmail.com>
@@ -10,7 +10,7 @@ use Muchacuba\Component\Mobile\Entity\Mobile;
 class MobileTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \Muchacuba\Component\Mobile\Entity\Mobile::getId
+     * @covers \Cubalider\Component\Mobile\Entity\Mobile::getId
      */
     public function testId()
     {
@@ -19,8 +19,8 @@ class MobileTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Muchacuba\Component\Mobile\Entity\Mobile::setNumber
-     * @covers \Muchacuba\Component\Mobile\Entity\Mobile::getNumber
+     * @covers \Cubalider\Component\Mobile\Entity\Mobile::setNumber
+     * @covers \Cubalider\Component\Mobile\Entity\Mobile::getNumber
      */
     public function testNumber()
     {

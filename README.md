@@ -1,5 +1,5 @@
-Muchacuba Mobile
-================
+Cubalider Mobile With Doctrine
+==============================
 
 This library is an implementation of `cubalider/mobile` using `doctrine/orm` for
 persistence.

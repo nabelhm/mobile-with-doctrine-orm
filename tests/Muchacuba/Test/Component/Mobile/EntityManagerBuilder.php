@@ -1,6 +1,6 @@
 <?php
 
-namespace Muchacuba\Test\Component\Mobile;
+namespace Cubalider\Test\Component\Mobile;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventManager;

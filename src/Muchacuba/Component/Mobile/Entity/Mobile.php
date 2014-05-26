@@ -1,6 +1,6 @@
 <?php
 
-namespace Muchacuba\Component\Mobile\Entity;
+namespace Cubalider\Component\Mobile\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
