@@ -72,6 +72,7 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::add
+     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::validate
      */
     public function testAdd()
     {
@@ -92,6 +93,7 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::add
+     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::validate
      * @expectedException \InvalidArgumentException
      */
     public function testAddWithInvalidObject()
@@ -102,6 +104,7 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::remove
+     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::validate
      */
     public function testRemove()
     {
@@ -127,6 +130,7 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::remove
+     * @covers \Muchacuba\Component\Mobile\Manager\MobileManager::validate
      * @expectedException \InvalidArgumentException
      */
     public function testRemoveWithInvalidObject()
