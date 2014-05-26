@@ -1,5 +1,5 @@
 {
-    "name": "muchacuba/mobile",
+    "name": "cubalider/mobile-with-doctrine",
     "description": "Provides an implementation of cubalider/mobile using doctrine/orm for persistence",
     "type": "library",
     "keywords": ["mobile"],
@@ -16,6 +16,6 @@
         "doctrine/orm": "2.4.*"
     },
     "autoload": {
-        "psr-0": { "Muchacuba\\Component\\Mobile": "src/" }
+        "psr-0": { "Cubalider\\Component\\Mobile": "src/" }
     }
 }
