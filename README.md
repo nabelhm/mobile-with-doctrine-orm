@@ -1,5 +1,5 @@
-Cubalider Mobile With Doctrine
-==============================
+Cubalider Mobile With Doctrine ORM
+==================================
 
 This library is an implementation of `cubalider/mobile` using `doctrine/orm` for
 persistence.

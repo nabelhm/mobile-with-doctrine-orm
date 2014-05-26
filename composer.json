@@ -1,5 +1,5 @@
 {
-    "name": "cubalider/mobile-with-doctrine",
+    "name": "cubalider/mobile-with-doctrine-orm",
     "description": "Provides an implementation of cubalider/mobile using doctrine/orm for persistence",
     "type": "library",
     "keywords": ["mobile"],
