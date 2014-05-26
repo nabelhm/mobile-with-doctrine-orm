@@ -67,6 +67,9 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
         /* Tests */
 
         $manager = new MobileManager($this->em);
+        $this->assertEquals($mobile2, $manager->pick('456'));
+
+        $manager = new MobileManager($this->em);
         $this->assertEquals($mobile2, $manager->pick(array('number' => '456')));
     }
 
