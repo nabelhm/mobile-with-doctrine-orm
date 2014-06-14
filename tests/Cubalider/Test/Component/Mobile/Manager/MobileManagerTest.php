@@ -48,30 +48,7 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($class, 'class', $manager);
         $this->assertAttributeEquals($em->getRepository('Cubalider\Component\Mobile\Entity\Mobile'), 'repository', $manager);
     }
-    
-    /**
-     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::pick
-     */
-    public function testPick()
-    {
-        /* Fixtures */
 
-        $mobile1 = new Mobile();
-        $mobile1->setNumber('123');
-        $this->em->persist($mobile1);
-        $mobile2 = new Mobile();
-        $mobile2->setNumber('456');
-        $this->em->persist($mobile2);
-        $this->em->flush();
-
-        /* Tests */
-
-        $manager = new MobileManager($this->em);
-        $this->assertEquals($mobile2, $manager->pick('456'));
-
-        $manager = new MobileManager($this->em);
-        $this->assertEquals($mobile2, $manager->pick(array('number' => '456')));
-    }
 
     /**
      * @covers \Cubalider\Component\Mobile\Manager\MobileManager::add
@@ -95,14 +72,27 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::add
-     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::validate
-     * @expectedException \InvalidArgumentException
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::pick
      */
-    public function testAddWithInvalidObject()
+    public function testPick()
     {
+        /* Fixtures */
+
+        $mobile1 = new Mobile();
+        $mobile1->setNumber('123');
+        $this->em->persist($mobile1);
+        $mobile2 = new Mobile();
+        $mobile2->setNumber('456');
+        $this->em->persist($mobile2);
+        $this->em->flush();
+
+        /* Tests */
+
         $manager = new MobileManager($this->em);
-        $manager->add(new \stdClass());
+        $this->assertEquals($mobile2, $manager->pick('456'));
+
+        $manager = new MobileManager($this->em);
+        $this->assertEquals($mobile2, $manager->pick(array('number' => '456')));
     }
 
     /**

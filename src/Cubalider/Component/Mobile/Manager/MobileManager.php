@@ -2,9 +2,9 @@
 
 namespace Cubalider\Component\Mobile\Manager;
 
-use Cubalider\Component\Mobile\Manager\MobileManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Cubalider\Component\Mobile\Entity\MobileInterface;
+use Cubalider\Component\Mobile\Model\MobileInterface;
+use Cubalider\Component\Mobile\Entity\MobileInterface as EntityMobileInterface;
 
 /**
  * @author Yosmany Garcia <yosmanyga@gmail.com>
@@ -45,11 +45,20 @@ class MobileManager implements MobileManagerInterface
     }
 
     /**
-     * Picks a mobile using given criteria
-     *
-     * @param string|array $criteria
-     *
-     * @return mixed
+     * @inheritdoc
+     */
+    public function add(MobileInterface $mobile)
+    {
+        /** @var EntityMobileInterface $mobileEntity */
+        $mobileEntity = new $this->class;
+        $mobileEntity->setNumber($mobile->getNumber());
+
+        $this->em->persist($mobileEntity);
+        $this->em->flush();
+    }
+
+    /**
+     * @inheritdoc
      */
     public function pick($criteria)
     {
@@ -61,26 +70,7 @@ class MobileManager implements MobileManagerInterface
     }
 
     /**
-     * Adds given mobile
-     *
-     * @param MobileInterface $mobile
-     *
-     * @return void
-     */
-    public function add($mobile)
-    {
-        $this->validate($mobile);
-
-        $this->em->persist($mobile);
-        $this->em->flush();
-    }
-
-    /**
-     * Removes given mobile
-     *
-     * @param MobileInterface $mobile
-     *
-     * @return void
+     * @inheritdoc
      */
     public function remove($mobile)
     {
