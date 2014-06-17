@@ -3,8 +3,7 @@
 namespace Cubalider\Component\Mobile\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Cubalider\Component\Mobile\Model\MobileInterface;
-use Cubalider\Component\Mobile\Entity\MobileInterface as EntityMobileInterface;
+use Cubalider\Component\Mobile\Model\Mobile;
 
 /**
  * @author Yosmany Garcia <yosmanyga@gmail.com>
@@ -17,11 +16,6 @@ class MobileManager implements MobileManagerInterface
     private $em;
 
     /**
-     * @var string
-     */
-    private $class;
-
-    /**
      * @var \Doctrine\ORM\EntityRepository
      */
     private $repository;
@@ -32,28 +26,19 @@ class MobileManager implements MobileManagerInterface
      * Additionally it creates a repository using $em, for given class
      *
      * @param EntityManagerInterface $em
-     * @param string                 $class
      */
-    public function __construct(
-        EntityManagerInterface $em,
-        $class = 'Cubalider\Component\Mobile\Entity\Mobile'
-    )
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->class = $em->getClassMetadata($class)->getName();
-        $this->repository = $this->em->getRepository($class);
+        $this->repository = $this->em->getRepository('Cubalider\Component\Mobile\Model\Mobile');
     }
 
     /**
      * @inheritdoc
      */
-    public function add(MobileInterface $mobile)
+    public function add(Mobile $mobile)
     {
-        /** @var EntityMobileInterface $mobileEntity */
-        $mobileEntity = new $this->class;
-        $mobileEntity->setNumber($mobile->getNumber());
-
-        $this->em->persist($mobileEntity);
+        $this->em->persist($mobile);
         $this->em->flush();
     }
 
@@ -74,24 +59,7 @@ class MobileManager implements MobileManagerInterface
      */
     public function remove($mobile)
     {
-        $this->validate($mobile);
-
         $this->em->remove($mobile);
         $this->em->flush();
-    }
-
-    /**
-     * Validates if given object is an instance of the supported class
-     *
-     * @param $mobile
-     * @throws \InvalidArgumentException if given object is not an instance of
-     *                                   the supported class
-     * @return void
-     */
-    private function validate($mobile)
-    {
-        if (!$mobile instanceof $this->class) {
-            throw new \InvalidArgumentException(sprintf("Invalid object, it must be an instance of %s", $this->class));
-        }
     }
 }
