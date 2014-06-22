@@ -1,6 +1,6 @@
 {
     "name": "cubalider/mobile-with-doctrine-orm",
-    "description": "Provides an implementation of cubalider/mobile-as-abstract using doctrine/orm for persistence",
+    "description": "This library is an implementation of cubalider/mobile-as-abstract using doctrine/orm for persistence",
     "type": "library",
     "keywords": ["mobile"],
     "license": "MIT",
