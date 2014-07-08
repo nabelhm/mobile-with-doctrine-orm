@@ -3,42 +3,47 @@
 namespace Cubalider\Test\Component\Mobile\Manager;
 
 use Cubalider\Component\Mobile\Manager\MobileManager;
-use Cubalider\Test\Component\Mobile\EntityManagerBuilder;
 use Cubalider\Component\Mobile\Model\Mobile;
 use Doctrine\ORM\EntityManager;
+use Yosmanyga\Component\Dql\Fit\Builder;
+use Yosmanyga\Component\Dql\Fit\WhereCriteriaFit;
 
 /**
  * @author Yosmany Garcia <yosmanyga@gmail.com>
+ * @author Manuel Emilio Carpio <mectwork@gmail.com>
  */
 class MobileManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var EntityManager
+     * @covers \Cubalider\Component\Mobile\Manager\BobileManager::__construct
      */
-    protected $em;
-
-    public function setUp()
+    public function testConstructor()
     {
-        $builder = new EntityManagerBuilder();
-        $this->em = $builder->createEntityManager(
-            array(
-                sprintf("%s/../../../../../../src/Cubalider/Component/Mobile/Resources/config/doctrine", __DIR__),
-            ),
-            array(
-                'Cubalider\Component\Mobile\Model\Mobile',
-            )
-        );
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')
+            ->getMock();
+        /** @var \Yosmanyga\Component\Dql\Fit\Builder $builder */
+        $builder = $this->getMockBuilder('Yosmanyga\Component\Dql\Fit\Builder')
+            ->setConstructorArgs(array($em))
+            ->getMock();
+        $manager = new MobileManager($em, $builder);
+
+        $this->assertAttributeEquals($em, 'em', $manager);
+        $this->assertAttributeEquals($builder, 'builder', $manager);
     }
 
     /**
      * @covers \Cubalider\Component\Mobile\Manager\MobileManager::__construct
      */
-    public function testConstructor()
+    public function testConstructorWithDefaultParameters()
     {
-        $manager = new MobileManager($this->em);
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')
+            ->getMock();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $manager = new MobileManager($em);
 
-        $this->assertAttributeEquals($this->em, 'em', $manager);
-        $this->assertAttributeEquals($this->em->getRepository('Cubalider\Component\Mobile\Model\Mobile'), 'repository', $manager);
+        $this->assertAttributeEquals(new Builder($em), 'builder', $manager);
     }
 
     /**
@@ -46,19 +51,19 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAdd()
     {
-        /* Fixtures */
+        $em = $this->getMock('Doctrine\ORM\EntityManagerInterface');
+        $mobile = new Mobile();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $manager = new MobileManager($em);
 
-        $mobile1 = new Mobile();
-        $mobile1->setNumber('123');
+        /** @var \PHPUnit_Framework_MockObject_MockObject $em */
+        $em
+            ->expects($this->once())->method('persist')
+            ->with($mobile);
+        $em
+            ->expects($this->once())->method('flush');
 
-        /* Tests */
-
-        $manager = new MobileManager($this->em);
-        $manager->add($mobile1);
-
-        $repository = $this->em->getRepository('Cubalider\Component\Mobile\Model\Mobile');
-
-        $this->assertEquals(1, count($repository->findAll()));
+        $manager->add($mobile);
     }
 
     /**
@@ -66,23 +71,83 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPick()
     {
-        /* Fixtures */
+        $em = $this->getMock('Doctrine\ORM\EntityManagerInterface');
+        $builder = $this->getMockBuilder('Yosmanyga\Component\Dql\Fit\Builder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $criteria = array('foo' => 'bar');
+        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getOneOrNullResult'))
+            ->getMockForAbstractClass();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Yosmanyga\Component\Dql\Fit\Builder $builder */
+        $manager = new MobileManager($em, $builder);
 
-        $mobile1 = new Mobile();
-        $mobile1->setNumber('123');
-        $this->em->persist($mobile1);
-        $mobile2 = new Mobile();
-        $mobile2->setNumber('456');
-        $this->em->persist($mobile2);
-        $this->em->flush();
+        /** @var \PHPUnit_Framework_MockObject_MockObject $builder */
+        $builder
+            ->expects($this->once())
+            ->method('build')
+            ->with(
+                'Cubalider\Component\Mobile\Model\Mobile',
+                new WhereCriteriaFit($criteria)
+            )
+            ->will($this->returnValue($qb));
+        $qb
+            ->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+        $query
+            ->expects($this->once())
+            ->method('getOneOrNullResult')
+            ->will($this->returnValue('foobar'));
 
-        /* Tests */
+        $this->assertEquals('foobar', $manager->pick($criteria));
+    }
 
-        $manager = new MobileManager($this->em);
-        $this->assertEquals($mobile2, $manager->pick('456'));
+    /**
+     * @covers \Cubalider\Component\Mobile\Manager\MobileManager::pick
+     */
+    public function testPickWithString()
+    {
+        $em = $this->getMock('Doctrine\ORM\EntityManagerInterface');
+        $builder = $this->getMockBuilder('Yosmanyga\Component\Dql\Fit\Builder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $criteria = 'foo';
+        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getOneOrNullResult'))
+            ->getMockForAbstractClass();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Yosmanyga\Component\Dql\Fit\Builder $builder */
+        $manager = new MobileManager($em, $builder);
 
-        $manager = new MobileManager($this->em);
-        $this->assertEquals($mobile2, $manager->pick(array('number' => '456')));
+        /** @var \PHPUnit_Framework_MockObject_MockObject $builder */
+        $builder
+            ->expects($this->once())
+            ->method('build')
+            ->with(
+                'Cubalider\Component\Mobile\Model\Mobile',
+                new WhereCriteriaFit(array('number' => $criteria))
+            )
+            ->will($this->returnValue($qb));
+        $qb
+            ->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+        $query
+            ->expects($this->once())
+            ->method('getOneOrNullResult')
+            ->will($this->returnValue('foobar'));
+
+        $this->assertEquals('foobar', $manager->pick($criteria));
     }
 
     /**
@@ -90,23 +155,18 @@ class MobileManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemove()
     {
-        /* Fixtures */
+        $em = $this->getMock('Doctrine\ORM\EntityManagerInterface');
+        $mobile = new Mobile();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $manager = new MobileManager($em);
 
-        $mobile1 = new Mobile();
-        $mobile1->setNumber('123');
-        $this->em->persist($mobile1);
-        $mobile2 = new Mobile();
-        $mobile2->setNumber('456');
-        $this->em->persist($mobile2);
-        $this->em->flush();
+        /** @var \PHPUnit_Framework_MockObject_MockObject $em */
+        $em
+            ->expects($this->once())->method('remove')
+            ->with($mobile);
+        $em
+            ->expects($this->once())->method('flush');
 
-        /* Tests */
-
-        $manager = new MobileManager($this->em);
-        $manager->remove($mobile1);
-
-        $repository = $this->em->getRepository('Cubalider\Component\Mobile\Model\Mobile');
-
-        $this->assertEquals(1, count($repository->findAll()));
+        $manager->remove($mobile);
     }
 }
