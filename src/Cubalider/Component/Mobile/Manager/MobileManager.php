@@ -2,8 +2,10 @@
 
 namespace Cubalider\Component\Mobile\Manager;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Cubalider\Component\Mobile\Model\Mobile;
+use Doctrine\ORM\EntityManagerInterface;
+use Yosmanyga\Component\Dql\Fit\Builder;
+use Yosmanyga\Component\Dql\Fit\WhereCriteriaFit;
 
 /**
  * @author Yosmany Garcia <yosmanyga@gmail.com>
@@ -11,26 +13,30 @@ use Cubalider\Component\Mobile\Model\Mobile;
 class MobileManager implements MobileManagerInterface
 {
     /**
+     * @var string
+     */
+    private $class = 'Cubalider\Component\Mobile\Model\Mobile';
+
+    /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $em;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var Builder;
      */
-    private $repository;
+    private $builder;
 
     /**
-     * Constructor
-     *
-     * Additionally it creates a repository using $em, for entity class
+     * Constructor.
      *
      * @param EntityManagerInterface $em
+     * @param Builder $builder
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, Builder $builder = null)
     {
         $this->em = $em;
-        $this->repository = $this->em->getRepository('Cubalider\Component\Mobile\Model\Mobile');
+        $this->builder = $builder ? : new Builder($em);
     }
 
     /**
@@ -50,8 +56,14 @@ class MobileManager implements MobileManagerInterface
         if (is_string($criteria)) {
             $criteria = array('number' => $criteria);
         }
+        $qb = $this->builder->build(
+            $this->class,
+            new WhereCriteriaFit($criteria)
+        );
 
-        return $this->repository->findOneBy($criteria);
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
