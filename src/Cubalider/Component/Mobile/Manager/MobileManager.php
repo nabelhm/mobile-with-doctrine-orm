@@ -40,7 +40,9 @@ class MobileManager implements MobileManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * Adds given mobile.
+     *
+     * @param Mobile $mobile
      */
     public function add(Mobile $mobile)
     {
@@ -49,7 +51,11 @@ class MobileManager implements MobileManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * Picks a mobile using given criteria.
+     *
+     * @param mixed $criteria
+     *
+     * @return Mobile|null The mobile or null if nothing is found
      */
     public function pick($criteria)
     {
@@ -67,7 +73,9 @@ class MobileManager implements MobileManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * Removes given mobile.
+     *
+     * @param Mobile $mobile
      */
     public function remove($mobile)
     {
